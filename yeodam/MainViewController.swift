@@ -6,162 +6,177 @@
 //
 
 import UIKit
-import SafariServices
 import WebKit
 import SnapKit
-
+import Firebase
+import FirebaseAnalytics
 
 class MainViewController: UIViewController {
-    
-    
-    var safariViewController : SFSafariViewController?
-    
-    
-    var webView: WKWebView = {
-        let wv = WKWebView()
-        
-        return wv
-    }()
-
-//    var webViews = [WKWebView]()
-    //    var webView = WKWebView()
-    
-    //    @IBOutlet weak var webView: WKWebView!
-//    var webView: WKWebView!
+    var isScrolling = false
+    var wkWebView: WKWebView!
     
     let refreshControl = UIRefreshControl()
-    private var isFirstLoad: Bool = true
 
+    var webView: WKWebView = {
+        let wv = WKWebView()
+        return wv
+    }()
+    
+    var myView: UIView = {
+        let mv = UIView()
+        return mv
+    }()
+
+    //MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        let configuration = WKWebViewConfiguration()
-        configuration.allowsInlineMediaPlayback = true // fasle값으로하면 더블터치 X
-        configuration.mediaTypesRequiringUserActionForPlayback = []
-        
-        var webView = WKWebView(frame: .zero, configuration: configuration)
-        print("###RUNNING###")
-        view = webView
-        
-        
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        webView = createWebView(frame: screenSize, configuration: WKWebViewConfiguration())
-        
-        webView.allowsBackForwardNavigationGestures = true
-        
-        refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControl.Event.valueChanged)
-        
-        webView.scrollView.addSubview(refreshControl)
-        webView.scrollView.bounces = true
-        webView.allowsLinkPreview = false
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        let request = URLRequest(url: RealURL.myURL!) //let request = URLRequest(url: myURL!)
-        
-        webView.load(request)
-        
-        
-        view.addSubview(webView)
-        webView.snp.makeConstraints { make in
+        view.addSubview(myView)
+        myView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        Analytics.logEvent("iOSViewControlllerLoad", parameters: nil)
+        
+//        setupLayout()
+        
+        let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.allowsInlineMediaPlayback = true
+        webConfiguration.mediaTypesRequiringUserActionForPlayback = []
+        if #available(iOS 14.5, *) {
+            webConfiguration.preferences.isTextInteractionEnabled = false
+        } else {
+            // Fallback on earlier versions
+        }
+        
+//        wkWebView = WKWebView(frame: CGRect(x: 0, y: 70, width: view.frame.width, height: self.view.bounds.height - 75), configuration: webConfiguration)
+        
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height + 5
+        
+        wkWebView = WKWebView(frame: CGRect(x: 0, y: statusBarHeight, width: view.frame.width, height: self.view.frame.height - statusBarHeight), configuration: webConfiguration)
+
+        wkWebView.uiDelegate = self
+        wkWebView.navigationDelegate = self
+        wkWebView.configuration.allowsInlineMediaPlayback = true
+//        wkWebView?.backgroundColor = .white
+        wkWebView.scrollView.bounces = false
+
+        
+        
+        //        webUIView.addSubview(wkWebView!)
+        //MARK: URL
+        let url = URL(string: "https://yeodam.kr/")!
+        wkWebView.load(URLRequest(url: url))
+        
+        wkWebView.allowsBackForwardNavigationGestures = true
+        refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControl.Event.valueChanged)
+        
+        wkWebView.scrollView.addSubview(refreshControl)
+        wkWebView.scrollView.bounces = true
+//        wkWebView.scrollView.delegate = self
+        wkWebView.allowsLinkPreview = false
+        wkWebView.configuration.preferences.javaScriptEnabled = true
+        wkWebView.translatesAutoresizingMaskIntoConstraints = true
+        
+    
+        
+        view.addSubview(wkWebView!)
 
     }
     
-//    func layoutSetup() {
-//        view.addSubview(webView)
-//        webView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-//        }
-//    }
+    func setupLayout(){
+        view.addSubview(webView)
+        webView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+        }
+    }
 
     @objc func refreshWebView( _ sender: UIRefreshControl) {
         print("###REFRESH###")
-        webView.reload()
+        wkWebView.reload()
         sender.endRefreshing()
     }
-    
-//    override func loadView() {
-//        super.loadView()
-//        
-//        //        webView = WKWebView(frame: self.container.bounds)
-//        //        self.container.addSubview(webView)
-//        let webConfiguration = WKWebViewConfiguration()
-//        webConfiguration.allowsInlineMediaPlayback = true
-//        
-//        webConfiguration.mediaTypesRequiringUserActionForPlayback = []
-//        
-//        webView = WKWebView(frame: .zero, configuration: webConfiguration)
-//        let screenSize: CGRect = UIScreen.main.bounds
-//        
-//        
-//        webView.allowsLinkPreview = false
-//        
-//        self.webView.configuration.dataDetectorTypes = .all
-//        if #available(iOS 14.0, *) {
-//            webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//        webView.configuration.preferences.javaScriptEnabled = true
-//        
-//        webView.navigationDelegate = self
-//        
-//        webView.translatesAutoresizingMaskIntoConstraints = false
-//        self.view.addSubview(webView)
-//    }
-    
 }
 
 extension MainViewController:WKNavigationDelegate, WKUIDelegate {
     
-    func createWebView(frame: CGRect, configuration: WKWebViewConfiguration) -> WKWebView {
-        let webView = WKWebView(frame: frame, configuration: configuration)
-        configuration.allowsInlineMediaPlayback = true
-        
-        // set delegate
-        webView.uiDelegate = self
-        webView.navigationDelegate = self
-        
-        // 화면에 추가
-        self.view.addSubview(webView)
-        webView.snp.makeConstraints { make in
-            make.top.equalTo(view).offset(5) // 탑만 세이프 영역
-            make.trailing.leading.bottom.equalToSuperview()
+    
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+
+        if let url = navigationAction.request.url, url.scheme != "http" && url.scheme != "https" {
+            UIApplication.shared.open(url, options: [:]) { (success) in
+                if !(success) {
+                    
+                }
+            }
+            print("외부 결제 앱 이동")
         }
-        // 웹뷰 목록에 추가
-//        self.webViews.append(webView)
+
+        if let urlStr = navigationAction.request.url?.absoluteString {
+            print("URL STRING: \(urlStr)")
+        }
+        print(navigationAction.request.url?.absoluteString ?? "")
+//        HTTPCookieStorage.setWKCookie(webView){completion in
+//
+//            var request = navigationAction.request
+//            let cookies = HTTPCookie.requestHeaderFields(with: HTTPCookieStorage.shared.cookies(for: request.url!)!)
+//            if let value = cookies["Cookie"]{
+//                NSLog("webView Cookies : \(value)")
+//                request.addValue(value, forHTTPHeaderField: "Cookie")
+//            }
+//        }
+        //                decisionHandler(.allow)
+        // 카카오 SDK가 호출하는 커스텀 스킴인 경우 open(_ url:) 메소드를 호출합니다.
+        if let url = navigationAction.request.url
+            , ["kakaokompassauth","kakaoplus","storylink"].contains(url.scheme) {
+            // 카카오톡, 카스, 밴드 실행, 디바이스에 해당 앱이 안깔려있으면 실행X 앱스토어로 이동하는 코드를 넣어야될듯
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
+            print("\(navigationAction.request.url) 외부 앱 이동")
+            decisionHandler(.cancel)
+            return
+        }
+
+        else if let url = navigationAction.request.url {
+            
+            if ["tel", "sms"].contains(url.scheme) && UIApplication.shared.canOpenURL(url) { // 전화 및 문자 스킴 발동
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                decisionHandler(.cancel)
+                return
+            }
+            decisionHandler(.allow)
+        }
         
-        // 그 외 서비스 환경에 최적화된 뷰 설정하기
-        
-        return webView
+        if navigationAction.navigationType == .linkActivated  { // a blank 처리
+            if let url = navigationAction.request.url,
+               let host = url.host, !host.hasPrefix("yeodam.kr"),
+               UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                print(url)
+                print("외부 사파리로 열기")
+                //                decisionHandler(.cancel)
+                return
+            } else {
+                print("웹뷰 안에서 이동")
+                //decisionHandler(.allow)
+                return
+            }
+        } else {
+            print("아무것도 클릭하지 않음")
+            //            decisionHandler(.allow)
+            return
+        }
+        // 서비스 상황에 맞는 나머지 로직을 구현.
+        //        decisionHandler(.allow)
     }
     
     
-//    func webView(_ webView: WKWebView,
-//                 createWebViewWith configuration: WKWebViewConfiguration,
-//                 for navigationAction: WKNavigationAction,
-//                 windowFeatures: WKWindowFeatures
-//    ) -> WKWebView? {
-//        
-//        guard let frame = self.webViews.last?.frame else {
-//            print("웹뷰 라스트 프레임")
-//            return nil
-//        }
-//        // 웹뷰를 생성하여 리턴하면 현재 웹뷰와 parent 관계가 형성됩니다.
-//        return createWebView(frame: frame, configuration: configuration)
-//    }
-    
-//    func destroyCurrentWebView() {
-//        // 웹뷰 목록과 화면에서 제거하기
-//        self.webViews.popLast()?.removeFromSuperview()
-//        
-//    }
-    
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler()
         }))
         
@@ -176,7 +191,7 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
             textField.text = defaultText
         }
         
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             if let text = alertController.textFields?.first?.text {
                 completionHandler(text)
             } else {
@@ -184,7 +199,7 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "취소", style: .default, handler: { (action) in
             completionHandler(nil)
         }))
         
@@ -193,20 +208,39 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
     
     func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { (action) in
             completionHandler(true)
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: "취소", style: .default, handler: { (action) in
             completionHandler(false)
         }))
         present(alertController, animated: true, completion: nil)
     }
     
-//    public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-//        // 중복적으로 리로드가 일어나지 않도록 처리 필요.
-//        webView.reload()
-//    }
+    public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        // 중복적으로 리로드가 일어나지 않도록 처리 필요.
+        webView.reload()
+    }
     
 
     
 }
+
+//extension MainViewController: UIScrollViewDelegate {
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        guard !isScrolling else { return }
+//        isScrolling = true
+//        
+//        if scrollView.contentOffset.y <= 0 {
+//            scrollView.contentOffset = CGPoint.zero
+//        }
+//        if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height {
+//            let offset = CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+//            scrollView.setContentOffset(offset, animated: false)
+//        }
+//        
+//        isScrolling = false
+//    }
+//    
+//}

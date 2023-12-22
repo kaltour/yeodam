@@ -6,11 +6,30 @@
 //
 
 import UIKit
+import SnapKit
+
 
 class SignValidViewController: UIViewController {
+    
+    var fullNameString: String = ""
+    
+    var fullNameLabel:UILabel = {
+        let lb = UILabel()
+        return lb
+    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .blue
+        
+        view.addSubview(fullNameLabel)
+        fullNameLabel.snp.makeConstraints { make in
+            make.center.equalTo(view)
+        }
+     
+        fullNameLabel.text = fullNameString
+
 
         // Do any additional setup after loading the view.
     }
