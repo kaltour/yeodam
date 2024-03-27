@@ -42,17 +42,17 @@ class MainViewController: UIViewController {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true
         webConfiguration.mediaTypesRequiringUserActionForPlayback = []
-        if #available(iOS 14.5, *) {
-            webConfiguration.preferences.isTextInteractionEnabled = false
-        } else {
-            // Fallback on earlier versions
-        }
+//        if #available(iOS 14.5, *) {
+//            webConfiguration.preferences.isTextInteractionEnabled = false
+//        } else {
+//            // Fallback on earlier versions
+//        }
         
 //        wkWebView = WKWebView(frame: CGRect(x: 0, y: 70, width: view.frame.width, height: self.view.bounds.height - 75), configuration: webConfiguration)
         
         let statusBarHeight = UIApplication.shared.statusBarFrame.height + 5
         
-        wkWebView = WKWebView(frame: CGRect(x: 0, y: statusBarHeight, width: view.frame.width, height: self.view.frame.height - statusBarHeight), configuration: webConfiguration)
+        wkWebView = WKWebView(frame: CGRect(x: 0, y: statusBarHeight, width: view.frame.width, height: self.view.frame.height - 95), configuration: webConfiguration)
 
         wkWebView.uiDelegate = self
         wkWebView.navigationDelegate = self

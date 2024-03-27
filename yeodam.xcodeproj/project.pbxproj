@@ -20,10 +20,6 @@
 		7D14B23F2B2FC75F003C30F4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D14B23E2B2FC75F003C30F4 /* GoogleService-Info.plist */; };
 		7D14B2422B2FC803003C30F4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 7D14B2412B2FC803003C30F4 /* FirebaseAnalytics */; };
 		7D14B2442B2FC803003C30F4 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 7D14B2432B2FC803003C30F4 /* FirebaseMessaging */; };
-		7D8128872B31785D007ED0BB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8128862B31785D007ED0BB /* LoginViewController.swift */; };
-		7D81288B2B317B72007ED0BB /* bridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 7D8128892B317B72007ED0BB /* bridge.js */; };
-		7D81288C2B317B72007ED0BB /* Example.html in Resources */ = {isa = PBXBuildFile; fileRef = 7D81288A2B317B72007ED0BB /* Example.html */; };
-		7D81288E2B3190DC007ED0BB /* SignValidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D81288D2B3190DC007ED0BB /* SignValidViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,10 +55,6 @@
 		7D0A2E602B281DCC008C75A8 /* yeodamUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = yeodamUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		7D14B23E2B2FC75F003C30F4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7D14B2452B2FCD67003C30F4 /* yeodam.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = yeodam.entitlements; sourceTree = "<group>"; };
-		7D8128862B31785D007ED0BB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		7D8128892B317B72007ED0BB /* bridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bridge.js; sourceTree = "<group>"; };
-		7D81288A2B317B72007ED0BB /* Example.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Example.html; sourceTree = "<group>"; };
-		7D81288D2B3190DC007ED0BB /* SignValidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignValidViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +113,6 @@
 				7D0A2E3F2B281DCA008C75A8 /* SceneDelegate.swift */,
 				7D0A2E412B281DCA008C75A8 /* MainViewController.swift */,
 				7D0A2E432B281DCA008C75A8 /* Main.storyboard */,
-				7D8128882B317860007ED0BB /* Login */,
 				7D0A2E462B281DCB008C75A8 /* Assets.xcassets */,
 				7D0A2E482B281DCB008C75A8 /* LaunchScreen.storyboard */,
 				7D14B23E2B2FC75F003C30F4 /* GoogleService-Info.plist */,
@@ -145,17 +136,6 @@
 				7D0A2E602B281DCC008C75A8 /* yeodamUITestsLaunchTests.swift */,
 			);
 			path = yeodamUITests;
-			sourceTree = "<group>";
-		};
-		7D8128882B317860007ED0BB /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				7D8128892B317B72007ED0BB /* bridge.js */,
-				7D81288A2B317B72007ED0BB /* Example.html */,
-				7D8128862B31785D007ED0BB /* LoginViewController.swift */,
-				7D81288D2B3190DC007ED0BB /* SignValidViewController.swift */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,9 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D0A2E4A2B281DCB008C75A8 /* LaunchScreen.storyboard in Resources */,
-				7D81288C2B317B72007ED0BB /* Example.html in Resources */,
 				7D0A2E472B281DCB008C75A8 /* Assets.xcassets in Resources */,
-				7D81288B2B317B72007ED0BB /* bridge.js in Resources */,
 				7D0A2E452B281DCA008C75A8 /* Main.storyboard in Resources */,
 				7D14B23F2B2FC75F003C30F4 /* GoogleService-Info.plist in Resources */,
 			);
@@ -301,10 +279,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D8128872B31785D007ED0BB /* LoginViewController.swift in Sources */,
 				7D0A2E422B281DCA008C75A8 /* MainViewController.swift in Sources */,
 				7D0A2E3E2B281DCA008C75A8 /* AppDelegate.swift in Sources */,
-				7D81288E2B3190DC007ED0BB /* SignValidViewController.swift in Sources */,
 				7D0A2E402B281DCA008C75A8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -487,7 +463,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = yeodam/yeodam.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = YAJP7SW67C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = yeodam/Info.plist;
@@ -498,15 +474,17 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yeodam.yeodam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -520,7 +498,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = yeodam/yeodam.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = YAJP7SW67C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = yeodam/Info.plist;
@@ -531,15 +509,17 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yeodam.yeodam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
