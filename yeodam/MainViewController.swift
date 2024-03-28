@@ -42,6 +42,7 @@ class MainViewController: UIViewController {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true
         webConfiguration.mediaTypesRequiringUserActionForPlayback = []
+        
 //        if #available(iOS 14.5, *) {
 //            webConfiguration.preferences.isTextInteractionEnabled = false
 //        } else {
@@ -172,7 +173,6 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
         // 서비스 상황에 맞는 나머지 로직을 구현.
         //        decisionHandler(.allow)
     }
-    
     
     func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
