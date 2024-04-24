@@ -65,7 +65,7 @@ class MainViewController: UIViewController {
         
         //        webUIView.addSubview(wkWebView!)
         //MARK: URL
-        let url = URL(string: "https://yeodam.kr/")!
+        let url = URL(string: "https://www.yeodam.kr/")!
         wkWebView.load(URLRequest(url: url))
         
         wkWebView.allowsBackForwardNavigationGestures = true
@@ -105,7 +105,7 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
     
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
         if let url = navigationAction.request.url, url.scheme != "http" && url.scheme != "https" {
             UIApplication.shared.open(url, options: [:]) { (success) in
@@ -141,7 +141,7 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
             return
         }
 
-        else if let url = navigationAction.request.url {
+        if let url = navigationAction.request.url {
             
             if ["tel", "sms"].contains(url.scheme) && UIApplication.shared.canOpenURL(url) { // 전화 및 문자 스킴 발동
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -150,15 +150,20 @@ extension MainViewController:WKNavigationDelegate, WKUIDelegate {
             }
             decisionHandler(.allow)
         }
-        
+   
         if navigationAction.navigationType == .linkActivated  { // a blank 처리
+            
             if let url = navigationAction.request.url,
-               let host = url.host, !host.hasPrefix("yeodam.kr"),
+               let hostUrl = url.host,
+               let host = url.host, !host.hasPrefix("www.yeodam.kr"), //yeodam.kr에서 www.yeodam.kr로 바꿈
                UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-                print(url)
+
+                UIApplication.shared.open(url) // open하는 코드
+                print("여담 도메인 이외 열기 \(url)")
+    
                 print("외부 사파리로 열기")
-                //                decisionHandler(.cancel)
+
+        
                 return
             } else {
                 print("웹뷰 안에서 이동")
